@@ -4,9 +4,9 @@
  * 2:使用fs.access检查B文件是否存在；如果已经存在那么就确定已经写入过路径，这种情况下需要置空该文件，这里进行的操作是删掉该文件
  * （上面两步操作相互独立）
  * 3:通过fs.readdir读取文件目录内容；将目录内容进行遍历，
- * 4:判断遍历的当前路径的目录类型，如果是fs.isFile文件，则去读取文件；如果是isDirectory文件夹，则再次遍历
+ * 4:判断遍历的当前路径的目录类型，如果是fs.isFile文件，则去读取文件；如果是isDirectory文件夹，则再次遍历;依次进行
  * 
- * 注意：如果需要直接替换匹配到的文件内容；可以直接用replace方法替换内容，然后使用fs.writeFile
+ * 注意：如果需要直接替换匹配到的文件内容；可以直接用replace方法替换内容，然后使用fs.writeFile覆盖原本的文件内容
  */
 const fs = require('fs');
 const path = require('path');//解析需要遍历的文件夹
@@ -28,7 +28,6 @@ function delatFile(filePath) {
     fs.access(filePath, (err) => {
         err ? console.log('目录/文件不存在') : UnLink()
     });
-
 }
 
 //文件遍历方法
@@ -42,7 +41,7 @@ function fileDisplay(filePath) {
             files.map((filename) => {
                 //获取当前文件的绝对路径
                 const filedir = path.join(filePath, filename);//path.join() 方法使用平台特定的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径。
-                //根据文件路径获取文件信息，返回一个fs.Stats对象
+                //根据文件路径获取文件信息，返回一个fs.Stats对象;fs.Stats 对象提供了关于文件的信息。
                 fs.stat(filedir, (eror, stats) => {
                     if (eror) {
                         console.log('获取文件stats失败');
